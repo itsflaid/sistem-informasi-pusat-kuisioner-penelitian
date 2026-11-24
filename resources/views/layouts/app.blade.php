@@ -13,7 +13,7 @@
             <main class="flex-grow-1">
                 @isset($header)
                     <header class="bg-white border-bottom">
-                        <div class="container-fluid py-4 px-4 px-lg-5">{{ $header }}</div>
+                        <div class="container-fluid py-3 px-4 px-lg-5">{{ $header }}</div>
                     </header>
                 @endisset
                 <div class="container-fluid py-4 px-4 px-lg-5">{{ $slot }}</div>
