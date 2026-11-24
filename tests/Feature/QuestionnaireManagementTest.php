@@ -27,8 +27,7 @@ class QuestionnaireManagementTest extends TestCase
             'title' => 'Kepuasan Layanan Perpustakaan',
             'status' => QuestionnaireStatus::Draft->value,
         ]);
-        $this->assertDatabaseCount('questions', 1);
-        $this->assertDatabaseCount('question_options', 2);
+        $this->assertDatabaseHas('questionnaires', ['external_url' => 'https://forms.gle/contohKuesioner']);
     }
 
     public function test_owner_submits_draft_questionnaire_for_verification(): void
@@ -45,6 +44,20 @@ class QuestionnaireManagementTest extends TestCase
         ]);
     }
 
+    public function test_external_url_must_use_https(): void
+    {
+        $user = User::factory()->create();
+        $category = Category::factory()->create();
+
+        $response = $this->actingAs($user)->post(route('questionnaires.store'), [
+            ...$this->payload($category),
+            'external_url' => 'http://forms.gle/contohKuesioner',
+        ]);
+
+        $response->assertSessionHasErrors('external_url');
+        $this->assertDatabaseMissing('questionnaires', ['user_id' => $user->id]);
+    }
+
     /** @return array<string, mixed> */
     private function payload(Category $category): array
     {
@@ -55,12 +68,7 @@ class QuestionnaireManagementTest extends TestCase
             'estimated_minutes' => 5,
             'target_respondents' => 50,
             'deadline_at' => now()->addDay()->toDateString(),
-            'questions' => [[
-                'type' => 'multiple_choice',
-                'text' => 'Bagaimana kepuasan Anda terhadap layanan perpustakaan?',
-                'is_required' => true,
-                'options' => [['label' => 'Puas'], ['label' => 'Tidak puas']],
-            ]],
+            'external_url' => 'https://forms.gle/contohKuesioner',
         ];
     }
 }

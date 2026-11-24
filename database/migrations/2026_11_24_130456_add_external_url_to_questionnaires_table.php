@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questionnaire_domain_tables', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('questionnaires', function (Blueprint $table) {
+            $table->string('external_url', 2048)->after('description');
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questionnaire_domain_tables');
+        Schema::table('questionnaires', function (Blueprint $table) {
+            $table->dropColumn('external_url');
+        });
     }
 };

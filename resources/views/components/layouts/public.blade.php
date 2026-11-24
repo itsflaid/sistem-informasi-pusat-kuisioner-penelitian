@@ -12,9 +12,9 @@
             <nav class="container py-3 d-flex align-items-center justify-content-between gap-3">
                 <a class="fw-bold fs-5 text-decoration-none text-forest" href="{{ route('home') }}">{{ config('app.name') }}</a>
                 <div class="d-none d-md-flex align-items-center gap-4">
-                    <a class="text-decoration-none text-body" href="#">Jelajah</a>
-                    <a class="text-decoration-none text-body" href="#">Cara kerja</a>
-                    <a class="text-decoration-none text-body" href="#">Panduan</a>
+                    <a class="text-decoration-none text-body" href="{{ route('explore') }}">Jelajah</a>
+                    <a class="text-decoration-none text-body" href="{{ route('home') }}#cara-kerja">Cara kerja</a>
+                    <a class="text-decoration-none text-body" href="{{ route('guide') }}">Panduan</a>
                 </div>
                 <div class="d-flex gap-2">
                     @auth
@@ -36,9 +36,9 @@
                     <span>{{ config('app.name') }}</span>
                 </div>
                 <div class="d-flex gap-3">
-                    <a class="text-leaf-deep" href="#">Jelajah</a>
-                    <a class="text-leaf-deep" href="#">Panduan</a>
-                    <a class="text-leaf-deep" href="#">Privasi</a>
+                    <a class="text-leaf-deep" href="{{ route('explore') }}">Jelajah</a>
+                    <a class="text-leaf-deep" href="{{ route('guide') }}">Panduan</a>
+                    <a class="text-leaf-deep" href="{{ route('privacy') }}">Privasi</a>
                 </div>
                 <span>Prototipe proyek Manajemen Proyek Sistem Informasi, Kelompok 6</span>
             </div>

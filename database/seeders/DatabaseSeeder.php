@@ -4,9 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\QuestionnaireStatus;
 use App\Models\Category;
-use App\Models\Question;
-use App\Models\Questionnaire;
-use App\Models\Response;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -76,14 +73,6 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]));
 
-        $likertScale = [
-            'Sangat Tidak Setuju',
-            'Tidak Setuju',
-            'Netral',
-            'Setuju',
-            'Sangat Setuju',
-        ];
-
         $titles = [
             'Pengaruh Penggunaan AI terhadap Efektivitas Belajar Mahasiswa UINSI',
             'Evaluasi Kepuasan Layanan Sistem Informasi Akademik Kampus',
@@ -111,83 +100,24 @@ class DatabaseSeeder extends Seeder
                 default => QuestionnaireStatus::Rejected,
             };
 
-            $questionnaire = Questionnaire::create([
-                'user_id' => $student->id,
+            $student->questionnaires()->create([
                 'category_id' => $category->id,
                 'title' => $title,
                 'slug' => Str::slug($title).'-'.Str::random(4),
                 'share_code' => Str::upper(Str::random(8)),
                 'description' => "Kuesioner penelitian untuk mendukung skripsi/tugas akhir mengenai {$title}.",
+                'external_url' => 'https://forms.gle/'.$i.'uinsiKuesioner',
                 'estimated_minutes' => 5,
                 'target_respondents' => 30,
                 'deadline_at' => $status === QuestionnaireStatus::Closed ? now()->subDay() : now()->addDays(14),
                 'status' => $status,
-                'rejection_reason' => $status === QuestionnaireStatus::Rejected ? 'Pertanyaan belum jelas, harap diperbaiki.' : null,
-                'closed_reason' => $status === QuestionnaireStatus::Closed ? 'Target terpenuhi.' : null,
+                'rejection_reason' => $status === QuestionnaireStatus::Rejected ? 'Tautan kuesioner tidak valid atau tidak dapat dibuka.' : null,
+                'closed_reason' => $status === QuestionnaireStatus::Closed ? 'Batas waktu telah berakhir.' : null,
                 'reviewed_by' => in_array($status, [QuestionnaireStatus::Active, QuestionnaireStatus::Rejected, QuestionnaireStatus::Closed], true) ? $admin->id : null,
                 'reviewed_at' => in_array($status, [QuestionnaireStatus::Active, QuestionnaireStatus::Rejected, QuestionnaireStatus::Closed], true) ? now()->subDays(2) : null,
                 'published_at' => in_array($status, [QuestionnaireStatus::Active, QuestionnaireStatus::Closed], true) ? now()->subDays(2) : null,
                 'closed_at' => $status === QuestionnaireStatus::Closed ? now()->subDay() : null,
             ]);
-
-            $mcQuestion = Question::create([
-                'questionnaire_id' => $questionnaire->id,
-                'type' => 'multiple_choice',
-                'text' => 'Berapa frekuensi Anda menggunakan fasilitas/layanan ini?',
-                'is_required' => true,
-                'sort_order' => 1,
-            ]);
-
-            $options = collect(['Setiap hari', '2-3 kali seminggu', 'Jarang', 'Tidak pernah'])->map(function ($label, $idx) use ($mcQuestion) {
-                return $mcQuestion->options()->create([
-                    'label' => $label,
-                    'sort_order' => $idx + 1,
-                ]);
-            });
-
-            $likertQuestion = Question::create([
-                'questionnaire_id' => $questionnaire->id,
-                'type' => 'likert',
-                'text' => 'Fasilitas dan layanan saat ini sudah memenuhi kebutuhan penelitian saya.',
-                'is_required' => true,
-                'sort_order' => 2,
-            ]);
-
-            $shortQuestion = Question::create([
-                'questionnaire_id' => $questionnaire->id,
-                'type' => 'short_text',
-                'text' => 'Saran Anda untuk peningkatan layanan ke depan?',
-                'is_required' => false,
-                'sort_order' => 3,
-            ]);
-
-            if (in_array($status, [QuestionnaireStatus::Active, QuestionnaireStatus::Closed], true)) {
-                $respondents = $students->reject(fn ($u) => $u->id === $student->id)->random(rand(5, 12));
-
-                foreach ($respondents as $respUser) {
-                    $response = Response::create([
-                        'questionnaire_id' => $questionnaire->id,
-                        'user_id' => $respUser->id,
-                        'submitted_at' => now()->subHours(rand(1, 48)),
-                    ]);
-
-                    $opt = $options->random();
-                    $response->answers()->create([
-                        'question_id' => $mcQuestion->id,
-                        'option_id' => $opt->id,
-                    ]);
-
-                    $response->answers()->create([
-                        'question_id' => $likertQuestion->id,
-                        'value_number' => rand(1, 5),
-                    ]);
-
-                    $response->answers()->create([
-                        'question_id' => $shortQuestion->id,
-                        'value_text' => 'Sangat membantu dan semoga ditingkatkan.',
-                    ]);
-                }
-            }
         }
     }
 }

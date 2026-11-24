@@ -7,8 +7,8 @@ use Database\Factories\QuestionnaireFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable([
@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'slug',
     'share_code',
     'description',
+    'external_url',
     'estimated_minutes',
     'target_respondents',
     'deadline_at',
@@ -28,7 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'published_at',
     'closed_at',
 ])]
-class Questionnaire extends \Illuminate\Database\Eloquent\Model
+class Questionnaire extends Model
 {
     /** @use HasFactory<QuestionnaireFactory> */
     use HasFactory, SoftDeletes;
@@ -46,16 +47,6 @@ class Questionnaire extends \Illuminate\Database\Eloquent\Model
     public function reviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reviewed_by');
-    }
-
-    public function questions(): HasMany
-    {
-        return $this->hasMany(Question::class)->orderBy('sort_order');
-    }
-
-    public function responses(): HasMany
-    {
-        return $this->hasMany(Response::class);
     }
 
     protected function isOpen(): Attribute

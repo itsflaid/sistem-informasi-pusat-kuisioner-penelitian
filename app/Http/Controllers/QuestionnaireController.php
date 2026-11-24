@@ -17,7 +17,7 @@ class QuestionnaireController extends Controller
 {
     public function index(Request $request): View
     {
-        $questionnaires = $request->user()->questionnaires()->with('category')->withCount('questions')->latest()->paginate(12);
+        $questionnaires = $request->user()->questionnaires()->with('category')->latest()->paginate(12);
 
         return view('questionnaires.index', compact('questionnaires'));
     }
@@ -30,12 +30,11 @@ class QuestionnaireController extends Controller
     public function store(StoreQuestionnaireRequest $request): RedirectResponse
     {
         $questionnaire = DB::transaction(function () use ($request): Questionnaire {
-            $data = $request->safe()->except('questions');
+            $data = $request->validated();
             $data['status'] = QuestionnaireStatus::Draft;
             $data['slug'] = $this->uniqueSlug($data['title']);
             $data['share_code'] = $this->uniqueShareCode();
             $questionnaire = $request->user()->questionnaires()->create($data);
-            $this->syncQuestions($questionnaire, $request->validated('questions'));
 
             return $questionnaire;
         });
@@ -46,7 +45,7 @@ class QuestionnaireController extends Controller
     public function show(Request $request, Questionnaire $questionnaire): View
     {
         $this->ensureOwner($request, $questionnaire);
-        $questionnaire->load(['category', 'questions.options']);
+        $questionnaire->load('category');
 
         return view('questionnaires.show', compact('questionnaire'));
     }
@@ -54,7 +53,6 @@ class QuestionnaireController extends Controller
     public function edit(Request $request, Questionnaire $questionnaire): View
     {
         $this->ensureEditable($request, $questionnaire);
-        $questionnaire->load('questions.options');
 
         return view('questionnaires.edit', ['categories' => $this->categories(), 'questionnaire' => $questionnaire]);
     }
@@ -62,9 +60,10 @@ class QuestionnaireController extends Controller
     public function update(UpdateQuestionnaireRequest $request, Questionnaire $questionnaire): RedirectResponse
     {
         DB::transaction(function () use ($request, $questionnaire): void {
-            $questionnaire->update($request->safe()->except('questions'));
-            $questionnaire->questions()->delete();
-            $this->syncQuestions($questionnaire, $request->validated('questions'));
+            $questionnaire->update($request->validated());
+            if ($questionnaire->status === QuestionnaireStatus::Rejected) {
+                $questionnaire->update(['status' => QuestionnaireStatus::Draft]);
+            }
         });
 
         return redirect()->route('questionnaires.show', $questionnaire)->with('success', 'Draf kuesioner berhasil diperbarui.');
@@ -73,8 +72,20 @@ class QuestionnaireController extends Controller
     public function submit(Request $request, Questionnaire $questionnaire): RedirectResponse
     {
         $this->ensureOwner($request, $questionnaire);
-        abort_unless($questionnaire->status === QuestionnaireStatus::Draft, 422);
-        $questionnaire->update(['status' => QuestionnaireStatus::Pending]);
+        if (! in_array($questionnaire->status, [QuestionnaireStatus::Draft, QuestionnaireStatus::Rejected], true)) {
+            return back()->with('error', 'Kuesioner tidak dapat diajukan pada status saat ini.');
+        }
+
+        if (! $questionnaire->deadline_at->isFuture()) {
+            return back()->with('error', 'Batas waktu harus masih di masa depan saat kuesioner diajukan.');
+        }
+
+        $questionnaire->update([
+            'status' => QuestionnaireStatus::Pending,
+            'rejection_reason' => null,
+            'reviewed_by' => null,
+            'reviewed_at' => null,
+        ]);
 
         return back()->with('success', 'Kuesioner telah diajukan untuk diverifikasi.');
     }
@@ -102,24 +113,6 @@ class QuestionnaireController extends Controller
     {
         $this->ensureOwner($request, $questionnaire);
         abort_unless(in_array($questionnaire->status, [QuestionnaireStatus::Draft, QuestionnaireStatus::Rejected], true), 422);
-    }
-
-    /** @param array<int, array<string, mixed>> $questions */
-    private function syncQuestions(Questionnaire $questionnaire, array $questions): void
-    {
-        foreach ($questions as $index => $questionData) {
-            $question = $questionnaire->questions()->create([
-                'type' => $questionData['type'], 'text' => $questionData['text'], 'help_text' => $questionData['help_text'] ?? null,
-                'is_required' => (bool) ($questionData['is_required'] ?? false), 'sort_order' => $index + 1,
-            ]);
-            $options = $questionData['type'] === 'likert' ? [['label' => '1'], ['label' => '2'], ['label' => '3'], ['label' => '4'], ['label' => '5']] : ($questionData['options'] ?? []);
-            foreach ($options as $optionIndex => $option) {
-                $label = trim((string) ($option['label'] ?? ''));
-                if ($label !== '') {
-                    $question->options()->create(['label' => $label, 'sort_order' => $optionIndex + 1]);
-                }
-            }
-        }
     }
 
     private function uniqueSlug(string $title): string

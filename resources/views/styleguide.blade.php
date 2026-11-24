@@ -19,7 +19,7 @@
 
         <section class="mb-5"><h2 class="h3 mb-3">Input dan status</h2><div class="row g-3"><div class="col-md-6"><x-field label="Judul kuesioner" for="title"><input id="title" class="form-control" placeholder="Masukkan judul"></x-field></div><div class="col-md-6 d-flex gap-2 align-items-end"><x-badge-status status="draft" /><x-badge-status status="pending" /><x-badge-status status="active" /></div></div></section>
 
-        <section class="mb-5"><h2 class="h3 mb-3">Kartu dan keadaan kosong</h2><div class="row g-4"><div class="col-md-6"><x-questionnaire-card title="Pengaruh penggunaan teknologi dalam pembelajaran" category="Pendidikan" :responses="12" :target="30" deadline="12 hari lagi" /></div><div class="col-md-6"><x-empty-state title="Belum ada kuesioner." message="Buat yang pertama." /></div></div></section>
+        <section class="mb-5"><h2 class="h3 mb-3">Kartu dan keadaan kosong</h2><div class="row g-4"><div class="col-md-6"><x-questionnaire-card title="Pengaruh penggunaan teknologi dalam pembelajaran" category="Pendidikan" deadline="12 hari lagi" href="#" /></div><div class="col-md-6"><x-empty-state title="Belum ada kuesioner." message="Buat yang pertama." /></div></div></section>
         <x-toast message="Kuesioner berhasil disimpan." />
     </div>
 </x-layouts.public>

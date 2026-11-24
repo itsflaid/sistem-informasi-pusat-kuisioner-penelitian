@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 
 class StoreQuestionnaireRequest extends FormRequest
@@ -24,35 +25,21 @@ class StoreQuestionnaireRequest extends FormRequest
             'category_id' => ['required', 'integer', Rule::exists('categories', 'id')->where('is_active', true)],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:5000'],
+            'external_url' => ['required', 'url:https', 'max:2048'],
             'estimated_minutes' => ['nullable', 'integer', 'min:1', 'max:255'],
             'target_respondents' => ['nullable', 'integer', 'min:1'],
             'deadline_at' => ['required', 'date', 'after:today'],
-            'questions' => ['required', 'array', 'min:1', 'max:50'],
-            'questions.*.type' => ['required', Rule::in(['multiple_choice', 'likert', 'short_text'])],
-            'questions.*.text' => ['required', 'string', 'max:2000'],
-            'questions.*.help_text' => ['nullable', 'string', 'max:1000'],
-            'questions.*.is_required' => ['nullable', 'boolean'],
-            'questions.*.options' => ['nullable', 'array', 'max:20'],
-            'questions.*.options.*.label' => ['nullable', 'string', 'max:255'],
         ];
     }
 
-    public function after(): array
+    protected function prepareForValidation(): void
     {
-        return [function (Validator $validator): void {
-            foreach ($this->input('questions', []) as $index => $question) {
-                if (($question['type'] ?? null) !== 'multiple_choice') {
-                    continue;
-                }
+        if (! $this->filled('deadline_at')) {
+            return;
+        }
 
-                $options = collect($question['options'] ?? [])->pluck('label')->filter(
-                    fn (mixed $label): bool => trim((string) $label) !== '',
-                );
-
-                if ($options->count() < 2) {
-                    $validator->errors()->add("questions.$index.options", 'Pertanyaan pilihan ganda memerlukan minimal dua opsi jawaban.');
-                }
-            }
-        }];
+        $this->merge([
+            'deadline_at' => Carbon::parse($this->input('deadline_at'), config('app.timezone'))->endOfDay()->toDateTimeString(),
+        ]);
     }
 }

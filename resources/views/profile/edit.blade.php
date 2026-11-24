@@ -61,7 +61,7 @@
             <div class="card border-0 shadow-sm bg-cream">
                 <div class="card-body p-4">
                     <h3 class="h6 mb-3">Hapus akun</h3>
-                    <p class="text-muted small mb-3">Menghapus akun akan menghapus semua data kuesioner dan respons milikmu secara permanen.</p>
+                    <p class="text-muted small mb-3">Menghapus akun akan menghapus semua data kuesioner milikmu secara permanen.</p>
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>

@@ -19,17 +19,17 @@
                         <div class="bg-white border rounded-3 shadow-sm p-4 p-md-5">
                             <section class="mb-5">
                                 <h2 class="h4 text-leaf-deep">Data yang dikumpulkan</h2>
-                                <p class="text-secondary mb-0">Kami dapat mengumpulkan data akun seperti nama, email, NIM, dan program studi untuk mendukung penggunaan platform oleh mahasiswa UIN Sultan Aji Muhammad Idris Samarinda. Kami juga menyimpan isi kuesioner dan respons yang diberikan melalui platform.</p>
+                                <p class="text-secondary mb-0">Kami dapat mengumpulkan data akun seperti nama, email, NIM, dan program studi untuk mendukung penggunaan platform oleh mahasiswa UIN Sultan Aji Muhammad Idris Samarinda. Kami juga menyimpan metadata kuesioner dan tautan eksternal yang ditambahkan melalui platform.</p>
                             </section>
 
                             <section class="mb-5">
                                 <h2 class="h4 text-leaf-deep">Tujuan penggunaan</h2>
-                                <p class="text-secondary mb-0">Data digunakan untuk mengelola akun, membantu pembuatan dan verifikasi kuesioner, menyajikan rekap respons, serta menjaga operasional prototipe ini. Data tidak digunakan untuk tujuan yang tidak terkait dengan layanan tanpa dasar yang jelas.</p>
+                                <p class="text-secondary mb-0">Data digunakan untuk mengelola akun, membantu verifikasi tautan kuesioner, serta menjaga operasional prototipe ini. Data tidak digunakan untuk tujuan yang tidak terkait dengan layanan tanpa dasar yang jelas.</p>
                             </section>
 
                             <section class="mb-5">
-                                <h2 class="h4 text-leaf-deep">Anonimitas respons</h2>
-                                <p class="text-secondary mb-0">Peneliti tidak melihat nama, email, NIM, atau program studi responden dalam rekap maupun ekspor data. Rekap dan unduhan respons disediakan dalam bentuk anonim agar respons dapat digunakan untuk penelitian tanpa menampilkan identitas pribadi responden.</p>
+                                <h2 class="h4 text-leaf-deep">Data jawaban kuesioner</h2>
+                                <p class="text-secondary mb-0">Jawaban responden tidak disimpan di platform ini. Saat responden membuka tautan, mereka diarahkan ke platform kuesioner eksternal yang memiliki kebijakan privasi dan pengelolaan data sendiri.</p>
                             </section>
 
                             <section class="mb-5">
