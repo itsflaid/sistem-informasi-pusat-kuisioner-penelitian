@@ -15,7 +15,7 @@
             </div>
 
             <div class="col-md-6">
-                <x-field for="email" label="Email kampus" :error="$errors->first('email')" class="mb-3">
+                <x-field for="email" label="Email" :error="$errors->first('email')" class="mb-3">
                     <input id="email" class="form-control" type="email" name="email" value="{{ old('email', $user->email) }}" required autocomplete="username">
                 </x-field>
             </div>

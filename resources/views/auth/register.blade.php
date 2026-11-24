@@ -11,7 +11,7 @@
             <input id="name" class="form-control" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
         </x-field>
 
-        <x-field for="email" label="Email kampus" :error="$errors->first('email')" class="mb-3">
+        <x-field for="email" label="Email" :error="$errors->first('email')" class="mb-3">
             <input id="email" class="form-control" type="email" name="email" value="{{ old('email') }}" required autocomplete="username">
         </x-field>
 
