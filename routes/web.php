@@ -6,6 +6,8 @@ use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\QuestionnaireReportController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -39,6 +41,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/k/{questionnaire:slug}/isi', [ResponseController::class, 'store'])->middleware('throttle:20,1')->name('fill.store');
     Route::get('/k/{questionnaire:slug}/terima-kasih', [ResponseController::class, 'thanks'])->name('fill.thanks');
     Route::get('/riwayat', [HistoryController::class, 'index'])->name('history');
+});
+
+Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->name('admin.')->group(function () {
+    Route::get('/', DashboardController::class)->name('dashboard');
+    Route::get('/verifikasi', [VerificationController::class, 'index'])->name('verifications.index');
+    Route::get('/verifikasi/{questionnaire}', [VerificationController::class, 'show'])->name('verifications.show');
+    Route::post('/verifikasi/{questionnaire}/setujui', [VerificationController::class, 'approve'])->name('verifications.approve');
+    Route::post('/verifikasi/{questionnaire}/tolak', [VerificationController::class, 'reject'])->name('verifications.reject');
 });
 
 require __DIR__.'/auth.php';
