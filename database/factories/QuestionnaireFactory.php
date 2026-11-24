@@ -58,7 +58,7 @@ class QuestionnaireFactory extends Factory
     {
         return $this->state(fn (): array => [
             'status' => QuestionnaireStatus::Rejected,
-            'rejection_reason' => 'Judul dan pertanyaan kurang spesifik.',
+            'rejection_reason' => 'Tautan kuesioner tidak valid atau tidak dapat dibuka.',
             'published_at' => null,
         ]);
     }

@@ -22,11 +22,6 @@ class User extends Authenticatable
         return $this->hasMany(Questionnaire::class);
     }
 
-    public function responses(): HasMany
-    {
-        return $this->hasMany(Response::class);
-    }
-
     public function reviewedQuestionnaires(): HasMany
     {
         return $this->hasMany(Questionnaire::class, 'reviewed_by');

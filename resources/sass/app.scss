@@ -99,6 +99,27 @@ h6 {
     text-align: center;
 }
 
+.app-sidebar {
+    width: 17rem;
+}
+
+@media (min-width: 992px) {
+    .app-sidebar {
+        height: 100vh;
+        overflow-y: auto;
+        position: sticky;
+        top: 0;
+    }
+}
+
+.pagination {
+    --bs-pagination-active-bg: var(--forest);
+    --bs-pagination-active-border-color: var(--forest);
+    --bs-pagination-color: var(--leaf-deep);
+    --bs-pagination-hover-color: var(--forest);
+    --bs-pagination-focus-color: var(--forest);
+}
+
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

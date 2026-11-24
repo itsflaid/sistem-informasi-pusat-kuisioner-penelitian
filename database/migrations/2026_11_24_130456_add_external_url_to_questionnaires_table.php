@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('questionnaires', function (Blueprint $table) {
-            $table->string('external_url', 2048)->nullable()->after('description');
+            $table->string('external_url', 2048)->after('description');
         });
     }
 

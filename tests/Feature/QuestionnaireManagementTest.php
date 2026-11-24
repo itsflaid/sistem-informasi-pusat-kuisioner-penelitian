@@ -44,6 +44,20 @@ class QuestionnaireManagementTest extends TestCase
         ]);
     }
 
+    public function test_external_url_must_use_https(): void
+    {
+        $user = User::factory()->create();
+        $category = Category::factory()->create();
+
+        $response = $this->actingAs($user)->post(route('questionnaires.store'), [
+            ...$this->payload($category),
+            'external_url' => 'http://forms.gle/contohKuesioner',
+        ]);
+
+        $response->assertSessionHasErrors('external_url');
+        $this->assertDatabaseMissing('questionnaires', ['user_id' => $user->id]);
+    }
+
     /** @return array<string, mixed> */
     private function payload(Category $category): array
     {

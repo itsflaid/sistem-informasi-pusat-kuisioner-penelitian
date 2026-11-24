@@ -6,6 +6,9 @@
     @if (session('status'))
         <x-toast :message="session('status')" />
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
     <form method="POST" action="{{ route('login') }}">
         @csrf
         <x-field for="email" label="Email" :error="$errors->first('email')" class="mb-3">

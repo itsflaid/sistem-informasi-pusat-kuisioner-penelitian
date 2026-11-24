@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Enums\QuestionnaireStatus;
 use App\Models\Questionnaire;
-use App\Models\Response;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,7 +21,7 @@ class DatabaseSeederTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'admin@uinsi.ac.id', 'role' => 'admin']);
         $this->assertDatabaseCount('questionnaires', 12);
         $this->assertSame(6, Questionnaire::query()->where('status', QuestionnaireStatus::Active)->count());
-        $this->assertGreaterThan(0, Response::query()->count());
+        $this->assertSame(12, Questionnaire::query()->whereNotNull('external_url')->count());
         $this->assertSame(20, User::query()->where('role', 'student')->count());
     }
 }

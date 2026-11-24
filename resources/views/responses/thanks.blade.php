@@ -1,1 +1,0 @@
-<x-app-layout><div class="row justify-content-center"><div class="col-lg-7"><x-empty-state title="Terima kasih atas respons Anda" message="Jawaban untuk kuesioner {{ $questionnaire->title }} telah dicatat secara anonim."><a class="btn btn-primary" href="{{ route('explore') }}">Jelajah kuesioner lain</a></x-empty-state></div></div></x-app-layout>
