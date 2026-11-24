@@ -1,17 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+    <x-slot name="header"><x-page-header title="Dasbor" description="Ringkasan aktivitas kuesionermu." /></x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
+    <div class="row g-4">
+        <div class="col-md-4"><x-stat-card label="Kuesioner saya" value="0" icon="clipboard2-data" /></div>
+        <div class="col-md-4"><x-stat-card label="Respons masuk" value="0" icon="people" /></div>
+        <div class="col-md-4"><x-stat-card label="Kuesioner diisi" value="0" icon="check2-circle" /></div>
+        <div class="col-12"><x-empty-state title="Belum ada kuesioner." message="Buat yang pertama untuk mulai mengumpulkan respons."><x-button>Buat kuesioner</x-button></x-empty-state></div>
     </div>
 </x-app-layout>

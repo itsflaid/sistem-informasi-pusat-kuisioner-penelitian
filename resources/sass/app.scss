@@ -1,1 +1,109 @@
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/hanken-grotesk';
+@import 'variables';
 @import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+    --paper: #FFFFFF;
+    --mist: #F3F6F4;
+    --forest: #0F2A1E;
+    --leaf: #17A05F;
+    --leaf-deep: #0B6B3C;
+    --sprout: #DFF3E7;
+    --cream: #FBF0DC;
+    --ice: #E3EEF6;
+    --line: #E3E8E4;
+    --ink-2: #3F4F46;
+    --ink-3: #5F6F66;
+}
+
+body {
+    background: var(--paper);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    letter-spacing: -.03em;
+}
+
+.btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-control,
+.form-select {
+    min-height: 44px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 .2rem rgba(23, 160, 95, .35);
+}
+
+.bg-mist { background-color: var(--mist) !important; }
+.bg-sprout { background-color: var(--sprout) !important; }
+.bg-cream { background-color: var(--cream) !important; }
+.bg-ice { background-color: var(--ice) !important; }
+.bg-forest { background-color: var(--forest) !important; }
+.text-forest { color: var(--forest) !important; }
+.text-leaf-deep { color: var(--leaf-deep) !important; }
+.text-muted { color: var(--ink-3) !important; }
+
+.chip-icon {
+    align-items: center;
+    background: var(--sprout);
+    border-radius: 30%;
+    color: var(--leaf-deep);
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 2.75rem;
+    justify-content: center;
+    width: 2.75rem;
+}
+
+.chip-icon i {
+    font-size: 1.25rem;
+}
+
+.status-badge {
+    border-radius: .625rem;
+    font-size: .875rem;
+    font-weight: 600;
+    padding: .375rem .625rem;
+}
+
+.status-badge--draft { background: var(--mist); color: var(--ink-2); }
+.status-badge--pending { background: var(--cream); color: var(--forest); }
+.status-badge--active { background: var(--sprout); color: var(--leaf-deep); }
+.status-badge--rejected { background: #FCE7E7; color: #9C2626; }
+.status-badge--closed { background: var(--line); color: var(--ink-3); }
+
+.questionnaire-card {
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    height: 100%;
+}
+
+.empty-state {
+    border: 1px dashed var(--line);
+    border-radius: 1.25rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}

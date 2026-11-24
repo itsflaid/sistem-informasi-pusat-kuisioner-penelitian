@@ -5,7 +5,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+
+Route::get('/_styleguide', function () {
+    abort_unless(app()->environment('local'), 404);
+
+    return view('styleguide');
+})->name('styleguide');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
