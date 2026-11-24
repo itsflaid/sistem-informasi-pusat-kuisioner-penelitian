@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Questionnaire;
 use App\Services\QuestionnaireReportService;
+use App\Services\CsvExporter;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\View\View;
@@ -17,19 +18,10 @@ class QuestionnaireReportController extends Controller
         return view('questionnaires.report', ['questionnaire' => $questionnaire, 'report' => $reports->build($questionnaire)]);
     }
 
-    public function export(Request $request, Questionnaire $questionnaire): StreamedResponse
+    public function export(Request $request, Questionnaire $questionnaire, CsvExporter $exporter): StreamedResponse
     {
         $this->owner($request, $questionnaire);
-        $questionnaire->load(['questions', 'responses.answers']);
-        return response()->streamDownload(function () use ($questionnaire): void {
-            $output = fopen('php://output', 'w');
-            fputcsv($output, ['Responden', 'Waktu kirim', ...$questionnaire->questions->map(fn ($question) => $question->text)->all()]);
-            foreach ($questionnaire->responses as $index => $response) {
-                $answers = $response->answers->keyBy('question_id');
-                fputcsv($output, ['Responden '.($index + 1), $response->submitted_at->format('Y-m-d H:i'), ...$questionnaire->questions->map(fn ($question) => $answers->get($question->id)?->value_text ?? $answers->get($question->id)?->value_number ?? $answers->get($question->id)?->option_id ?? '')->all()]);
-            }
-            fclose($output);
-        }, 'rekap-'. $questionnaire->slug.'.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
+        return $exporter->questionnaire($questionnaire);
     }
 
     private function owner(Request $request, Questionnaire $questionnaire): void

@@ -1,4 +1,4 @@
-@props(['title', 'category' => 'Kategori', 'responses' => 0, 'target' => null, 'deadline' => 'Belum ditentukan', 'action' => 'Lihat', 'href' => '#'])
+@props(['title', 'category' => 'Kategori', 'responses' => 0, 'target' => null, 'deadline' => 'Belum ditentukan', 'action' => 'Lihat', 'href' => null])
 
 <article {{ $attributes->merge(['class' => 'questionnaire-card card']) }}>
     <div class="card-body d-flex flex-column p-4">
@@ -9,7 +9,9 @@
         @endif
         <div class="d-flex justify-content-between align-items-center gap-2 small text-muted mt-auto">
             <span><i class="bi bi-clock me-1"></i>{{ $deadline }}</span>
-            <a class="btn btn-outline-primary btn-sm" href="{{ $href }}">{{ $action }}</a>
+            @if ($href)
+                <a class="btn btn-outline-primary btn-sm" href="{{ $href }}">{{ $action }}</a>
+            @endif
         </div>
     </div>
 </article>

@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'slug',
     'share_code',
     'description',
+    'external_url',
     'estimated_minutes',
     'target_respondents',
     'deadline_at',

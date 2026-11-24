@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController as StudentDashboardController;
 use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\HistoryController;
@@ -10,9 +12,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\VerificationController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', HomeController::class)->name('home');
 
 Route::get('/jelajah', [ExploreController::class, 'index'])->name('explore');
 Route::get('/k/{questionnaire:slug}', [ExploreController::class, 'show'])->name('public.questionnaires.show');
@@ -23,9 +23,10 @@ Route::get('/_styleguide', function () {
     return view('styleguide');
 })->name('styleguide');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', StudentDashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::view('/panduan', 'public.guide')->name('guide');
+Route::view('/privasi', 'public.privacy')->name('privacy');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,12 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/questionnaires/{questionnaire}/submit', [QuestionnaireController::class, 'submit'])->name('questionnaires.submit');
     Route::post('/questionnaires/{questionnaire}/close', [QuestionnaireController::class, 'close'])->name('questionnaires.close');
     Route::resource('questionnaires', QuestionnaireController::class)->except('destroy');
-    Route::get('/questionnaires/{questionnaire}/rekap', [QuestionnaireReportController::class, 'show'])->name('questionnaires.report');
-    Route::get('/questionnaires/{questionnaire}/ekspor/csv', [QuestionnaireReportController::class, 'export'])->name('questionnaires.export');
     Route::get('/k/{questionnaire:slug}/isi', [ResponseController::class, 'create'])->name('fill.show');
-    Route::post('/k/{questionnaire:slug}/isi', [ResponseController::class, 'store'])->middleware('throttle:20,1')->name('fill.store');
-    Route::get('/k/{questionnaire:slug}/terima-kasih', [ResponseController::class, 'thanks'])->name('fill.thanks');
-    Route::get('/riwayat', [HistoryController::class, 'index'])->name('history');
 });
 
 Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->name('admin.')->group(function () {

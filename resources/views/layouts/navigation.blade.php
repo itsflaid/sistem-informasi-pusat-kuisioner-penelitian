@@ -8,10 +8,14 @@
         <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : 'text-body' }}" href="{{ route('dashboard') }}">
             <i class="bi bi-grid me-2"></i>Dasbor
         </a>
-        <a class="nav-link text-body" href="#"><i class="bi bi-clipboard2-data me-2"></i>Kuesioner saya</a>
-        <a class="nav-link text-body" href="#"><i class="bi bi-compass me-2"></i>Jelajah</a>
-        <a class="nav-link text-body" href="#"><i class="bi bi-clock-history me-2"></i>Riwayat</a>
-        <a class="nav-link text-body" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i>Profil</a>
+        <a class="nav-link {{ request()->routeIs('questionnaires.*') ? 'active' : 'text-body' }}" href="{{ route('questionnaires.index') }}"><i class="bi bi-clipboard2-data me-2"></i>Kuesioner saya</a>
+        <a class="nav-link {{ request()->routeIs('explore', 'public.questionnaires.show') ? 'active' : 'text-body' }}" href="{{ route('explore') }}"><i class="bi bi-compass me-2"></i>Jelajah</a>
+        <a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : 'text-body' }}" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i>Profil</a>
+        @if (Auth::user()->role === 'admin')
+            <div class="small text-uppercase text-muted mt-3 mb-1">Admin</div>
+            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : 'text-body' }}" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2 me-2"></i>Dasbor admin</a>
+            <a class="nav-link {{ request()->routeIs('admin.verifications.*') ? 'active' : 'text-body' }}" href="{{ route('admin.verifications.index') }}"><i class="bi bi-clipboard-check me-2"></i>Verifikasi</a>
+        @endif
     </nav>
 
     <div class="border-top pt-3">

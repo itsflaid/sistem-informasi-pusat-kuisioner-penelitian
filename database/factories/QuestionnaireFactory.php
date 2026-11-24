@@ -21,6 +21,7 @@ class QuestionnaireFactory extends Factory
             'slug' => Str::slug($title).'-'.Str::random(5),
             'share_code' => Str::upper(Str::random(8)),
             'description' => fake('id_ID')->paragraph(),
+            'external_url' => 'https://forms.gle/'.Str::random(12),
             'estimated_minutes' => fake()->numberBetween(5, 15),
             'target_respondents' => fake()->numberBetween(20, 100),
             'deadline_at' => now()->addDays(fake()->numberBetween(7, 30)),

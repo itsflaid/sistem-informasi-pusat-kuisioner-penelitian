@@ -27,8 +27,7 @@ class QuestionnaireManagementTest extends TestCase
             'title' => 'Kepuasan Layanan Perpustakaan',
             'status' => QuestionnaireStatus::Draft->value,
         ]);
-        $this->assertDatabaseCount('questions', 1);
-        $this->assertDatabaseCount('question_options', 2);
+        $this->assertDatabaseHas('questionnaires', ['external_url' => 'https://forms.gle/contohKuesioner']);
     }
 
     public function test_owner_submits_draft_questionnaire_for_verification(): void
@@ -55,12 +54,7 @@ class QuestionnaireManagementTest extends TestCase
             'estimated_minutes' => 5,
             'target_respondents' => 50,
             'deadline_at' => now()->addDay()->toDateString(),
-            'questions' => [[
-                'type' => 'multiple_choice',
-                'text' => 'Bagaimana kepuasan Anda terhadap layanan perpustakaan?',
-                'is_required' => true,
-                'options' => [['label' => 'Puas'], ['label' => 'Tidak puas']],
-            ]],
+            'external_url' => 'https://forms.gle/contohKuesioner',
         ];
     }
 }

@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\QuestionnaireStatus;
 use App\Models\Category;
-use App\Models\Question;
-use App\Models\Questionnaire;
 use App\Models\Response;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -76,14 +74,6 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]));
 
-        $likertScale = [
-            'Sangat Tidak Setuju',
-            'Tidak Setuju',
-            'Netral',
-            'Setuju',
-            'Sangat Setuju',
-        ];
-
         $titles = [
             'Pengaruh Penggunaan AI terhadap Efektivitas Belajar Mahasiswa UINSI',
             'Evaluasi Kepuasan Layanan Sistem Informasi Akademik Kampus',
@@ -111,13 +101,13 @@ class DatabaseSeeder extends Seeder
                 default => QuestionnaireStatus::Rejected,
             };
 
-            $questionnaire = Questionnaire::create([
-                'user_id' => $student->id,
+            $questionnaire = $student->questionnaires()->create([
                 'category_id' => $category->id,
                 'title' => $title,
                 'slug' => Str::slug($title).'-'.Str::random(4),
                 'share_code' => Str::upper(Str::random(8)),
                 'description' => "Kuesioner penelitian untuk mendukung skripsi/tugas akhir mengenai {$title}.",
+                'external_url' => 'https://forms.gle/'.$i.'uinsiKuesioner',
                 'estimated_minutes' => 5,
                 'target_respondents' => 30,
                 'deadline_at' => $status === QuestionnaireStatus::Closed ? now()->subDay() : now()->addDays(14),
@@ -130,8 +120,9 @@ class DatabaseSeeder extends Seeder
                 'closed_at' => $status === QuestionnaireStatus::Closed ? now()->subDay() : null,
             ]);
 
-            $mcQuestion = Question::create([
-                'questionnaire_id' => $questionnaire->id,
+            continue;
+
+            $mcQuestion = $questionnaire->questions()->create([
                 'type' => 'multiple_choice',
                 'text' => 'Berapa frekuensi Anda menggunakan fasilitas/layanan ini?',
                 'is_required' => true,
@@ -145,16 +136,14 @@ class DatabaseSeeder extends Seeder
                 ]);
             });
 
-            $likertQuestion = Question::create([
-                'questionnaire_id' => $questionnaire->id,
+            $likertQuestion = $questionnaire->questions()->create([
                 'type' => 'likert',
                 'text' => 'Fasilitas dan layanan saat ini sudah memenuhi kebutuhan penelitian saya.',
                 'is_required' => true,
                 'sort_order' => 2,
             ]);
 
-            $shortQuestion = Question::create([
-                'questionnaire_id' => $questionnaire->id,
+            $shortQuestion = $questionnaire->questions()->create([
                 'type' => 'short_text',
                 'text' => 'Saran Anda untuk peningkatan layanan ke depan?',
                 'is_required' => false,
