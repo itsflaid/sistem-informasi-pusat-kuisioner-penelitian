@@ -5,6 +5,7 @@ use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\QuestionnaireReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,6 +33,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/questionnaires/{questionnaire}/submit', [QuestionnaireController::class, 'submit'])->name('questionnaires.submit');
     Route::post('/questionnaires/{questionnaire}/close', [QuestionnaireController::class, 'close'])->name('questionnaires.close');
     Route::resource('questionnaires', QuestionnaireController::class)->except('destroy');
+    Route::get('/questionnaires/{questionnaire}/rekap', [QuestionnaireReportController::class, 'show'])->name('questionnaires.report');
+    Route::get('/questionnaires/{questionnaire}/ekspor/csv', [QuestionnaireReportController::class, 'export'])->name('questionnaires.export');
     Route::get('/k/{questionnaire:slug}/isi', [ResponseController::class, 'create'])->name('fill.show');
     Route::post('/k/{questionnaire:slug}/isi', [ResponseController::class, 'store'])->middleware('throttle:20,1')->name('fill.store');
     Route::get('/k/{questionnaire:slug}/terima-kasih', [ResponseController::class, 'thanks'])->name('fill.thanks');
