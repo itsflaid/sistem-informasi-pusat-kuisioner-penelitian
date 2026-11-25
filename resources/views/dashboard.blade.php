@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <x-page-header title="Dasbor" description="Ringkasan tautan kuesioner dan aktivitasmu.">
-            <x-slot name="actions"><a class="btn btn-primary" href="{{ route('questionnaires.create') }}">Tambah tautan</a></x-slot>
+        <x-page-header title="Dashboard" description="Ringkasan kuesioner dan aktivitasmu.">
+            <x-slot name="actions"><a class="btn btn-primary" href="{{ route('questionnaires.create') }}">Tambah kuesioner</a></x-slot>
         </x-page-header>
     </x-slot>
 
@@ -19,8 +19,8 @@
                     </div>
 
                     @if ($recentQuestionnaires->isEmpty())
-                        <x-empty-state title="Belum ada kuesioner." message="Tambahkan tautan kuesioner pertamamu untuk mulai mencari responden.">
-                            <a class="btn btn-primary" href="{{ route('questionnaires.create') }}">Tambah tautan</a>
+                        <x-empty-state title="Belum ada kuesioner." message="Tambahkan kuesioner pertamamu untuk mulai mencari responden.">
+                            <a class="btn btn-primary" href="{{ route('questionnaires.create') }}">Tambah kuesioner</a>
                         </x-empty-state>
                     @else
                         <div class="list-group list-group-flush">

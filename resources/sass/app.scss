@@ -103,6 +103,49 @@ h6 {
     width: 17rem;
 }
 
+.sidebar-public-cta {
+    align-items: center;
+    background: var(--leaf-deep);
+    border-radius: 1rem;
+    color: #fff;
+    display: flex;
+    gap: .75rem;
+    padding: .875rem 1rem;
+    text-decoration: none;
+    transition: background-color .15s ease;
+}
+
+.sidebar-public-cta:hover,
+.sidebar-public-cta:focus-visible {
+    background: var(--forest);
+    color: #fff;
+}
+
+.sidebar-public-cta:focus-visible {
+    outline: 2px solid var(--leaf);
+    outline-offset: 2px;
+}
+
+.sidebar-public-cta__icon {
+    align-items: center;
+    background: rgba(255, 255, 255, .16);
+    border-radius: 30%;
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 2.25rem;
+    justify-content: center;
+    width: 2.25rem;
+}
+
+.sidebar-public-cta__icon i {
+    font-size: 1.125rem;
+}
+
+.sidebar-public-cta__title {
+    font-size: .9375rem;
+    font-weight: 700;
+}
+
 @media (min-width: 992px) {
     .app-sidebar {
         height: 100vh;

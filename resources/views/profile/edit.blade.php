@@ -3,11 +3,15 @@
         <x-page-header title="Profil" description="Kelola data akun dan keanggotaanmu di {{ config('app.name') }}." />
     </x-slot>
 
+    @if (session('status') === 'profile-updated')
+        <div class="alert alert-success" role="alert">Profil berhasil diperbarui.</div>
+    @endif
+
     <div class="row g-4">
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm mb-4">
+            <div class="card shadow-sm h-100">
                 <div class="card-body p-4">
-                    <h3 class="h6 mb-4">Informasi Profil</h3>
+                    <h2 class="h5 mb-3">Informasi profil</h2>
                     @include('profile.partials.update-profile-information-form', [
                         'user' => $user,
                         'studyPrograms' => $studyPrograms,
@@ -17,15 +21,16 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="card shadow-sm h-100">
                 <div class="card-body p-4">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="rounded-circle bg-mist d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
-                            <i class="bi bi-person-fill text-leaf-deep fs-3"></i>
+                    <h2 class="h5 mb-3">Ringkasan akun</h2>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="chip-icon">
+                            <i class="bi bi-person-fill"></i>
                         </div>
                         <div class="ms-3">
                             <div class="fw-semibold text-forest">{{ $user->name }}</div>
-                            <div class="small text-muted">{{ $user->email }}</div>
+                            <div class="small text-muted text-truncate">{{ $user->email }}</div>
                         </div>
                     </div>
                     <dl class="row small mb-0">
@@ -45,23 +50,20 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row g-4 mt-4">
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm">
+            <div class="card shadow-sm h-100">
                 <div class="card-body p-4">
-                    <h3 class="h6 mb-3">Ubah kata sandi</h3>
+                    <h2 class="h5 mb-3">Ubah kata sandi</h2>
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-8 mt-4">
-            <div class="card border-0 shadow-sm bg-cream">
+        <div class="col-lg-4">
+            <div class="card shadow-sm bg-cream h-100">
                 <div class="card-body p-4">
-                    <h3 class="h6 mb-3">Hapus akun</h3>
-                    <p class="text-muted small mb-3">Menghapus akun akan menghapus semua data kuesioner milikmu secara permanen.</p>
+                    <h2 class="h5 mb-3">Hapus akun</h2>
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>

@@ -22,6 +22,21 @@ class DashboardController extends Controller
                 ->count(),
             'userCount' => User::query()->count(),
             'categoryCount' => Category::query()->count(),
+            'pendingQuestionnaires' => Questionnaire::query()
+                ->with(['user', 'category'])
+                ->where('status', QuestionnaireStatus::Pending)
+                ->latest()
+                ->take(5)
+                ->get(),
+            'latestQuestionnaires' => Questionnaire::query()
+                ->with(['user', 'category'])
+                ->latest()
+                ->take(5)
+                ->get(),
+            'latestUsers' => User::query()
+                ->latest()
+                ->take(5)
+                ->get(),
         ]);
     }
 }

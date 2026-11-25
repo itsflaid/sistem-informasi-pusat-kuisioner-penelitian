@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header"><x-page-header title="Edit tautan kuesioner" description="Perbarui informasi dan tautan kuesioner eksternal." /></x-slot>
+    <x-slot name="header"><x-page-header title="Edit kuesioner" description="Perbarui informasi kuesioner eksternalmu." /></x-slot>
     <form method="POST" action="{{ route('questionnaires.update', $questionnaire) }}">@csrf @method('PUT')
         <div class="card shadow-sm"><div class="card-body p-4"><div class="row g-3">
             <div class="col-12"><x-field for="title" label="Judul" :error="$errors->first('title')"><input class="form-control" id="title" name="title" value="{{ old('title', $questionnaire->title) }}" required></x-field></div>

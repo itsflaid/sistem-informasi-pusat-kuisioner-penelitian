@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header"><x-page-header title="Tambahkan tautan kuesioner" description="Simpan tautan kuesioner eksternal untuk ditinjau dan dibagikan." /></x-slot>
+    <x-slot name="header"><x-page-header title="Tambah kuesioner" description="Simpan kuesioner dari platform eksternal untuk ditinjau dan dibagikan." /></x-slot>
 
     <form method="POST" action="{{ route('questionnaires.store') }}">
         @csrf
